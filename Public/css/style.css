@@ -41,7 +41,7 @@ textarea {
   margin-bottom: 1rem;
 }
 
-.btn {
+.searchBtn {
   background-color: var(--black);
   border: none;
   color: white; 
@@ -89,7 +89,7 @@ img {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   grid-template-areas: 
-  "logo button"
+  "logo blogs"
   "menu menu";
   padding-top: 10px;
 }

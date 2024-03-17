@@ -14,6 +14,7 @@ try{
     let perPage = 10;
     let page = req.query.page || 1;
 
+    //fetch
     const data = await Post.aggregate([ { $sort: { createdAt: -1 } } ])
     .skip(perPage * page -perPage)
     .limit(perPage)
@@ -39,8 +40,8 @@ try{
 
 
 
-router.get('/about', (req, res) => {
-    res.render('about');
+router.get('/blogs', (req, res) => {
+    res.render('blogs');
 });
 
 
@@ -56,7 +57,7 @@ const locals = {
     title: data.title,
     description: "this ones a lil difffff"
 }
-res.render('index', { locals, data });
+res.render('index', { locals, data, currentRoute: `/post/${slug}` });
 } catch (error){
     console.log(error);
 }
@@ -92,6 +93,13 @@ router.post('/search', async (req, res) => {
     }
   
   });
+  
+  router.get('/about', (req, res) => {
+    res.render('about', {
+      currentRoute: '/about'
+    });
+  });
+  
 
 module.exports = router;
 

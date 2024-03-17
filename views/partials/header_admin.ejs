@@ -1,0 +1,27 @@
+<header class="header">
+    <a href="/" class="header_logo">Admin Panel</a>
+
+     
+    <!-- navbar options -->
+    
+    <nav class="header__nav">
+        <ul>
+          <li>
+            <a href="/" class="<%= isActiveRoute('/', currentRoute) %>">Home</a>
+          </li>
+          <li>
+            <a href="../post.ejs" class="<%= isActiveRoute('/posts', currentRoute) %>">Posts</a>
+          </li>
+          <li>
+            <a href="/contact" class="<%= isActiveRoute('/contact', currentRoute) %>">Contact</a>
+          </li>
+        </ul>
+    
+      </nav>
+    
+    <div class=".searchBtn">
+        <button>
+            Logout
+        </button>
+    </div>
+</header>
