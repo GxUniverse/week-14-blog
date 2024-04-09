@@ -92,7 +92,7 @@ router.get('/admin', async (req, res) => {
     }
   });
 
-  router.get('/dashboard', authmiddleware, async (req, res) => {
+  router.get('/dashboard', authMiddleware, async (req, res) => {
     res.render('admin/dashboard');
 
   });

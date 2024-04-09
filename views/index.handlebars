@@ -1,0 +1,22 @@
+<div class="author">
+    <h1 class="author_body">The Gx Universe</h1>
+    <p class="author_body">Tech Blog & News</p>
+</div>
+
+<!-- display blogs -->
+<section class="articles">
+    <h2 class="articles_heading">Latest posts</h2>
+    <ul class="article-ul">
+        {{#each data}}
+            <li>
+                <a href="/post/{{_id}}">
+                    <span>{{title}}</span>
+                    <span class="article-list_date">{{createdAt.toDateString}}</span>
+                </a>
+            </li>
+        {{/each}}
+    </ul>
+    {{#if nextPage}}
+        <a href="/?page={{nextPage}}" class="pagination">&lt; View Older Posts</a>
+    {{/if}}
+</section>

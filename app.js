@@ -1,44 +1,48 @@
-require('dotenv').config();
-
-//dependancies
-
 const express = require('express');
-const expressLayout = require('express-ejs-layouts');
+const bodyParser = require('body-parser');
+const path = require('path');
+const exphbs = require('express-handlebars');
+const sequelize = require('./config/database'); // Assuming Sequelize configuration is in config/database.js
 
-const connectDB = require('../week-14-blog/server/config/db');
-const cookieParser = require('cookie-parser');
-const session = require ('express-session')
-const MongoStore = require('connect-mongo');
+// Importing models
+const Post = require('./models/Post');
+const User = require('./models/User');
+
+// Importing routes
+const indexRoutes = require('./routes/index');
+const userRoutes = require('./routes/user');
 
 const app = express();
-const PORT = 3001 || process.env.PORT;
 
-//connect to database
-connectDB();
+// Handlebars middleware
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use(cookieParser());
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI
-    }),
-}));
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static('public'));
+// Define routes
+app.use('/', indexRoutes);
+app.use('/user', userRoutes); // Assuming user-related routes are prefixed with '/user'
 
-
-app.use(expressLayout);
-app.set('layout', './layouts/main');
-app.set('view engine', 'ejs');
-
-app.use('/', require('../week-14-blog/server/routes/main'));
-app.use('/', require('../week-14-blog/server/routes/admin'));
-
-app.listen(PORT, ()=> {
-    console.log(`App listening on port ${PORT}`);
-});
+// Connect to MySQL database using Sequelize
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Database connected successfully.');
+    // Sync models with database (create tables if they don't exist)
+    return sequelize.sync();
+  })
+  .then(() => {
+    console.log('Models synced with database.');
+    // Start server
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+  })
+  .catch((err) => {
+    console.error('Unable to connect to the database:', err);
+  });

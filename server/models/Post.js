@@ -1,23 +1,24 @@
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const Schema = mongoose.Schema;
-const PostSchema = new Schema({
+const Post = sequelize.define('Post', {
     title: {
-        type: String,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     body: {
-        type: String,
-        required: true,
+        type: DataTypes.TEXT, // Changed to TEXT for longer text content
+        allowNull: false
     },
     createdAt: {
-        type: Date,
-        default: Date.now,
-    }, 
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
+    },
     updatedAt: {
-        type: Date,
-        default: Date.now,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
     }
 });
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = Post;
+
